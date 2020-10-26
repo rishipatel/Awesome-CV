@@ -205,6 +205,7 @@
 \newcommand*{\entrydatestyle}[1]{{\fontsize{8pt}{1em}\bodyfontlight\slshape\color{graytext} #1}}
 \newcommand*{\entrylocationstyle}[1]{{\fontsize{9pt}{1em}\bodyfontlight\slshape\color{awesome} #1}}
 \newcommand*{\descriptionstyle}[1]{{\fontsize{9pt}{1em}\bodyfontlight\upshape\color{text} #1}}
+\newcommand*{\summarystyle}[1]{{\fontsize{9pt}{1em}\bodyfontlight\upshape\color{text} #1}}
 
 % For elements of subentry
 \newcommand*{\subentrytitlestyle}[1]{{\fontsize{8pt}{1em}\bodyfont\mdseries\color{graytext} #1}}
@@ -577,6 +578,36 @@
   \end{tabular*}%
 }
 
+% Define an environment for cvsummary
+\newenvironment{cvsummary}{%
+  \vspace{-4.0mm}
+  \begin{justify}
+}{%
+  \end{justify}
+  \vspace{-4.0mm}
+}
+
+% Define an cventrywithsummary of cv information
+% Usage: \cventry{<position>}{<title>}{<location>}{<date>}{<description>}{<summary>}
+\newcommand*{\cventrywithsummary}[6]{
+  \vspace{-2.0mm}
+  \setlength\tabcolsep{0pt}
+  \setlength{\extrarowheight}{0pt}
+  \begin{tabular*}{\textwidth}{@{\extracolsep{\fill}} L{\textwidth - 4.5cm} R{4.5cm}}
+    \ifempty{#2#3}
+      {\entrypositionstyle{#1} & \entrydatestyle{#4} \\}
+      {\entrytitlestyle{#2} & \entrylocationstyle{#3} \\
+      \entrypositionstyle{#1} & \entrydatestyle{#4}}
+    \ifempty{#6}
+      {\\ \multicolumn{2}{L{\textwidth}}{\descriptionstyle{#5}}}
+      {\\ \multicolumn{2}{L{\textwidth}}{\summarystyle{#6}} \\
+       \multicolumn{2}{L{\textwidth}}{\descriptionstyle{#5}}}
+
+    % \multicolumn{2}{L{\textwidth}}{\summarystyle{#6}} \\
+    % \multicolumn{2}{L{\textwidth}}{\descriptionstyle{#5}}
+  \end{tabular*}%
+}
+
 % Define an environment for cvsubentry
 \newenvironment{cvsubentries}{%
   \begin{center}
@@ -616,7 +647,7 @@
 % Define a line of cv information(honor, award or something else)
 % Usage: \cvhonor{<position>}{<title>}{<location>}{<date>}
 \newcommand*{\cvhonor}[4]{%
-  \honordatestyle{#4} & \honorpositionstyle{#1}, \honortitlestyle{#2} & \honorlocationstyle{#3} \\
+  \honordatestyle{#4} & \honorpositionstyle{#1} \honortitlestyle{#2} & \honorlocationstyle{#3} \\
 }
 
 % Define an environment for cvskill
